@@ -1,0 +1,21 @@
+{
+  "tables": [
+    {"name": "categories",  "file": "categories.csv",  "pk": "cat_id"},
+    {"name": "products",    "file": "products.csv",    "pk": "sku"},
+    {"name": "order_items", "file": "order_items.csv", "pk": "line_id"}
+  ],
+  "fds": [
+    {"table": "categories", "det": ["cat_name"], "dep": ["cat_id", "region"],
+     "label": "同一类别名只能对应一个类别编号与大区"},
+    {"table": "products", "det": ["cat_id"], "dep": ["manager"],
+     "label": "同一类别编号只能有一名负责人"}
+  ],
+  "fks": [
+    {"child_table": "products", "child_col": "cat_id",
+     "parent_table": "categories", "parent_col": "cat_id",
+     "label": "商品所属类别必须同时保留"},
+    {"child_table": "order_items", "child_col": "sku",
+     "parent_table": "products", "parent_col": "sku",
+     "label": "明细引用的商品必须同时保留"}
+  ]
+}

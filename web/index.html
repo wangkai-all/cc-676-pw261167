@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>入仓修复工作台</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="title">
+    <h1>入仓修复工作台</h1>
+    <span class="subtitle">不改单元格内容，从候选记录中选出可一起发布的最大权重子集</span>
+  </div>
+  <div class="topmeta">
+    <span id="backend" class="badge"></span>
+    <span id="fingerprint" class="badge mono" title="输入指纹（权重或约束修改后变化）"></span>
+    <button id="btn-reload" class="btn">重新载入数据</button>
+    <button id="btn-theme" class="btn ghost" title="切换明暗">◐</button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="graph">① 冲突关系</button>
+  <button class="tab" data-tab="plan">② 保留与隔离方案</button>
+  <button class="tab" data-tab="publish">③ 校验与发布</button>
+</nav>
+
+<main>
+  <!-- ============ 页一：冲突图谱 ============ -->
+  <section id="tab-graph" class="tabpane active">
+    <div class="graph-wrap">
+      <div class="legend" id="legend"></div>
+      <div class="svg-scroll"><svg id="graph" role="img" aria-label="冲突关系图"></svg></div>
+    </div>
+    <aside class="side">
+      <div class="panel">
+        <h2>求解控制</h2>
+        <div class="row">
+          <label for="time-limit">超时（秒）</label>
+          <input id="time-limit" type="number" value="10" min="0.01" max="600" step="0.1">
+        </div>
+        <div class="row"><span id="mustkeep-count">必留 0 行</span></div>
+        <button id="btn-solve" class="btn primary">联合求解（整数规划）</button>
+        <div id="solve-hint" class="hint"></div>
+      </div>
+      <div class="panel" id="row-detail"><h2>行详情</h2><p class="muted">点击图中节点查看</p></div>
+    </aside>
+  </section>
+
+  <!-- ============ 页二：方案 ============ -->
+  <section id="tab-plan" class="tabpane">
+    <div id="plan-banner"></div>
+    <div id="plan-body" class="plan-grid">
+      <div class="panel"><h2>✓ 保留清单 <span id="kept-count" class="muted"></span></h2><div id="kept-list"></div></div>
+      <div class="panel"><h2>✗ 隔离清单 <span id="drop-count" class="muted"></span></h2><div id="drop-list"></div></div>
+      <aside class="panel" id="why-panel"><h2>为什么被舍弃</h2><p class="muted">点击隔离清单中的一行</p></aside>
+    </div>
+  </section>
+
+  <!-- ============ 页三：发布 ============ -->
+  <section id="tab-publish" class="tabpane">
+    <div class="panel" id="publish-candidate"><h2>当前候选</h2><p class="muted">先在“冲突关系”页求解生成候选</p></div>
+    <div class="panel">
+      <h2>已发布版本</h2>
+      <div id="releases"></div>
+    </div>
+  </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>
